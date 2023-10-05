@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "module13part1"
+version = "0.1.0"
+description = ""
+authors = ["Hannakua <alucky1181@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.103.1"
+fastapi-mail = "^1.4.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
