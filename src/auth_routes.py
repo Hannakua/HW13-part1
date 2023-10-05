@@ -11,9 +11,21 @@ from src.auth_services import auth_service
 
 from src.email import send_email
 from src.users import confirmed_email as confirmed_mail
+from src.schemas import ContactResponse
+from fastapi_limiter.depends import RateLimiter
+from src.database.models import User
+from main import get_contacts
 
 router = APIRouter(prefix='/auth', tags=["auth"])
 security = HTTPBearer()
+
+
+@router.get("/", response_model=List[ContactResponse], description='No more than 10 requests per minute',
+            dependencies=[Depends(RateLimiter(times=10, seconds=60))])
+async def read_contacts(skip: int = 0, limit: int = 25, db: Session = Depends(get_db),
+                     current_user: User = Depends(auth_service.get_current_user)):
+    contacts = await get_contacts(skip, limit, current_user, db)
+    return contacts
 
 
 @router.post("/signup", response_model=UserResponse, status_code=status.HTTP_201_CREATED)

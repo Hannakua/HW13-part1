@@ -7,11 +7,19 @@ from typing import List
 from datetime import date, timedelta
 from src.auth_services import auth_service
 from src.auth_routes import router
-
+import redis.asyncio as redis
+from src.conf.config import settings
+from fastapi_limiter import FastAPILimiter
 
 app = FastAPI()
 
 app.include_router(router, prefix='/api')
+
+@app.on_event("startup")
+async def startup():
+    r = await redis.Redis(host=settings.redis_host, port=settings.redis_port, db=0, encoding="utf-8",
+                          decode_responses=True)
+    await FastAPILimiter.init(r)
 
 @app.get("/")
 def read_root():

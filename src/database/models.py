@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey, Boolean
 # from sqlalchemy.sql.sqltypes import DateTime
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
+from src.database.db import engine
 
 Base = declarative_base()
 
@@ -27,7 +29,7 @@ class User(Base):
     refresh_token = Column(String(255), nullable=True)
     confirmed = Column(Boolean, default=False)
   
-
+Base.metadata.create_all(bind=engine)
 
 
     
