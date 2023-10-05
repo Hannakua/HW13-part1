@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 from libgravatar import Gravatar
 from src.database.models import User
 from src.schemas import UserModel
-from libgravatar import Gravatar
 
 
 async def get_user_by_email(email: str, db: Session) -> User:
@@ -32,3 +31,9 @@ async def confirmed_email(email: str, db: Session) -> None:
     user = await get_user_by_email(email, db)
     user.confirmed = True
     db.commit()
+
+async def update_avatar(email, url: str, db: Session) -> User:
+    user = await get_user_by_email(email, db)
+    user.avatar = url
+    db.commit()
+    return user

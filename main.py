@@ -7,13 +7,27 @@ from typing import List
 from datetime import date, timedelta
 from src.auth_services import auth_service
 from src.auth_routes import router
+from src.routes_users import router_users
 import redis.asyncio as redis
 from src.conf.config import settings
 from fastapi_limiter import FastAPILimiter
+from fastapi.middleware.cors import CORSMiddleware
+from src.conf.config import settings
 
 app = FastAPI()
 
 app.include_router(router, prefix='/api')
+app.include_router(router_users, prefix='/api')
+
+origins = [settings.origins_url]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 async def startup():

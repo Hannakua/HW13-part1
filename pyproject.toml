@@ -6,9 +6,10 @@ authors = ["Hannakua <alucky1181@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 fastapi = "^0.103.1"
 fastapi-mail = "^1.4.1"
+cloudinary = "^1.36.0"
 
 
 [build-system]
